@@ -5,21 +5,15 @@ const path = require("path")
 
 
 
-const mymodule = (dirName, ext, cb) => {
-fs.readdir(dirName, "utf-8", (error, data) => {
-  ext = "." + ext
+module.exports = function (directory, filter, callback) {
+  filter = '.' + filter
+  fs.readdir(directory, 'utf8', function (error, list) {
     if (error) {
-     return cb(error, null)
+      return callback(error)
     }
-    // fileExt = pathName(dirName)
-    // const res = data.filter((x) => )
 
-    cb(null, data.filter((x) => {
-      return path.extname(x) === "." + ext
-    }))      
-    
+    callback(null, list.filter(function (entry) {
+      return path.extname(entry) === filter
+    }))
   })
-  
-} 
-
-module.exports = mymodule
+}
