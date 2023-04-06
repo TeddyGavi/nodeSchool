@@ -8,13 +8,11 @@ const port = +process.argv[2];
  */
 
 const parseTime = (date) => {
-  const HrMinSec = {
+  return {
     hour: date.getHours(),
     minute: date.getMinutes(),
     second: date.getSeconds(),
   };
-
-  return HrMinSec;
 };
 
 /**
