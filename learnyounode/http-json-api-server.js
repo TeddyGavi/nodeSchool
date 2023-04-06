@@ -17,25 +17,39 @@ const parseTime = (date) => {
   return HrMinSec;
 };
 
+/**
+ *
+ * @param {Date} date from new Date constructor
+ * @returns {object}
+ */
+const unix = (date) => {
+  return { unixtime: date.getTime() };
+};
+
 const server = http.createServer((req, res) => {
   // json res when /api/parsetime
   // {"hour": 14, "minute:" 23, "second": 15}
   // json res for path /api/unixtime
   // {"unixtime" : 137613... :number}
 
+  let modResponse;
+
   const url = new URL(req.url, "http://example.ca");
-  console.log(url);
+  const search = url.searchParams.get("iso");
 
   if (req.method === "GET" && url.pathname === "/api/parsetime") {
     console.log("in parse time");
-    const search = url.searchParams.get("iso");
-    console.log(new Date(search).getHours());
-    console.log(parseTime(new Date(search)));
+    modResponse = parseTime(new Date(search));
+  } else if (req.method === "GET" && url.pathname === "/api/unixtime") {
+    console.log("in unix");
+    modResponse = unix(new Date(search));
+  } else {
+    res.wiretHead(404);
+    res.end();
   }
 
-  if (req.method === "GET" && url.pathname === "/api/unixtime") {
-    console.log("in unix");
-  }
+  res.writeHead(200, { "content-type": "application/json" });
+  res.end(JSON.stringify(modResponse));
 });
 
 server.listen(port, () => console.log(`Server on port: ${port}`));
