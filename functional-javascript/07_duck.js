@@ -1,6 +1,7 @@
 function duckCount(...args) {
-  console.log([...args]);
-  return Object.prototype.hasOwnProperty.call(this.args, "quack");
+  return args.filter((x) => {
+    return Object.prototype.hasOwnProperty.call(x, "quack");
+  }).length;
 }
 
 module.exports = duckCount;
